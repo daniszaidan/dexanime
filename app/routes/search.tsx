@@ -21,19 +21,24 @@ const pageName = 'Discover Anime';
 const type = 'Search';
 
 export default function Search() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const query = searchParams.get('query');
+  const [searchParams] = useSearchParams();
+  const query = searchParams.get('query') || '';
+  const page = Number(searchParams.get('page')) || 1;
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState<FormSearch | null>({
-    search: query || '',
+    search: query,
   });
 
-  const { data, isLoading, isError } = useSearchAnime(query || '');
+  const { data, isLoading, isError, pagination } = useSearchAnime(query, page);
 
   const onSubmit: SubmitHandler<FormSearch> = (data) => {
     setFormData(data);
-    navigate(`/search?query=${encodeURIComponent(data?.search || '')}`);
+    navigate(`/search?query=${encodeURIComponent(data.search || '')}&page=1`);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    navigate(`/search?query=${encodeURIComponent(query)}&page=${newPage}`);
   };
 
   return (
@@ -48,7 +53,14 @@ export default function Search() {
               formData={formData}
               setFormData={setFormData}
             />
-            <SearchResult data={data} isLoading={isLoading} isError={isError} />
+            <SearchResult
+              data={data}
+              isLoading={isLoading}
+              isError={isError}
+              page={page}
+              pagination={pagination}
+              handlePageChange={handlePageChange}
+            />
           </div>
         </section>
         <Footer />

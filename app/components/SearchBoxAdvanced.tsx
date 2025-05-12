@@ -26,7 +26,7 @@ export default function SearchBoxAdvanced(props: SearchBoxAdvanced) {
       const value = watchedSearch?.trim() || '';
       setFormData({ search: value });
       onSubmit({ search: value });
-      navigate(`/search?query=${encodeURIComponent(value)}`);
+      navigate(`/search?query=${encodeURIComponent(value)}&page=1`);
     }, 250);
 
     return () => {

@@ -1,3 +1,4 @@
+import { Pagination } from './types';
 import type {
   ButtonHTMLAttributes,
   Dispatch,
@@ -13,7 +14,6 @@ export interface ButtonIcon extends ButtonHTMLAttributes<HTMLButtonElement> {
 export interface ButtonTitle extends ButtonHTMLAttributes<HTMLButtonElement> {
   title?: string;
   titleClassName?: string;
-  icon: ReactElement;
 }
 
 export interface Chip
@@ -93,6 +93,9 @@ export interface SearchResult {
   data: any;
   isLoading: boolean;
   isError: boolean;
+  page: number;
+  pagination: Pagination | undefined;
+  handlePageChange: (newPage: number) => void;
 }
 
 export interface Anime {
@@ -208,4 +211,20 @@ export interface Anime {
     name: string;
     url: string;
   }[];
+}
+
+export interface Pagination {
+  last_visible_page: number;
+  has_next_page: boolean;
+  current_page: number;
+  items: {
+    count: number;
+    total: number;
+    per_page: number;
+  };
+}
+
+export interface JikanAnimeResponse {
+  data: Anime[];
+  pagination: Pagination;
 }

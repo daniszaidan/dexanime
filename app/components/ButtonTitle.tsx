@@ -4,7 +4,7 @@ import type { ButtonTitle } from '~/utils/types';
 import { cn } from '~/utils/utils';
 
 const ButtonTitle = forwardRef<HTMLButtonElement, ButtonTitle>(
-  ({ title, titleClassName, icon, className, ...props }, ref) => {
+  ({ title, titleClassName, className, ...props }, ref) => {
     return (
       <button
         ref={ref}

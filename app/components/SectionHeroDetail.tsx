@@ -69,9 +69,6 @@ export default function SectionHeroDetail(props: SectionHeroDetail) {
               <Link to={data?.trailer?.url || ''} target="_blank">
                 <ButtonTitle
                   className="bg-white-30 hover:bg-white-45 h-[45px] cursor-pointer"
-                  icon={
-                    <PlayIcon className="w-[20px] h-[20px] text-white-100" />
-                  }
                   title="Watch Trailer"
                 />
               </Link>
@@ -80,9 +77,6 @@ export default function SectionHeroDetail(props: SectionHeroDetail) {
               <Link to={data?.url || ''} target="_blank">
                 <ButtonTitle
                   className="bg-white-30 hover:bg-white-45 h-[45px] cursor-pointer"
-                  icon={
-                    <ArrowRightIcon className="w-[22.5px] h-[22.5px] text-white-100" />
-                  }
                   title="MyAnimeList"
                 />
               </Link>
