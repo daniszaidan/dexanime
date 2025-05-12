@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -9,19 +9,34 @@ import { useNavigate } from 'react-router';
 export default function SearchBoxAdvanced(props: SearchBoxAdvanced) {
   const { onSubmit, formData, setFormData } = props;
   const navigate = useNavigate();
+  const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
-  const { handleSubmit, setValue, register, reset } = useForm<FormSearch>();
+  const { handleSubmit, register, reset, watch } = useForm<FormSearch>();
+  const watchedSearch = watch('search');
 
   useEffect(() => {
     setFormData((prevFormData) => ({
       search: prevFormData?.search || '',
     }));
-  }, [setFormData, setValue]);
+  }, [setFormData]);
+
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      const value = watchedSearch?.trim() || '';
+      setFormData({ search: value });
+      onSubmit({ search: value });
+      navigate(`/search?query=${encodeURIComponent(value)}`);
+    }, 250);
+
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, [watchedSearch]);
 
   const handleReset = () => {
-    setFormData({
-      search: '',
-    });
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    setFormData({ search: '' });
     reset();
     navigate(`/search?query=`);
   };
